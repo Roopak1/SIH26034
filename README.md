@@ -123,14 +123,13 @@ The dashboard demo cards use deterministic sample data and explicitly mark QA-01
 
 ## Deployment
 
-Deploy the frontend and backend as separate services:
+The root `vercel.json` is configured for Vercel Services, so the frontend and FastAPI backend can deploy together under one domain:
 
-1. In Vercel, import this repository and set **Root Directory** to `frontend`. Use the Vite preset, `npm run build`, and `dist` as the output directory.
-2. Deploy the backend with the included `render.yaml` on Render, or configure another Python host with `pip install -r requirements.txt` and `uvicorn app.main:app --host 0.0.0.0 --port $PORT` from `backend`.
-3. Set `GEMINI_API_KEY` on the backend. Set `CORS_ORIGINS` to the final Vercel URL.
-4. In Vercel, add `VITE_API_BASE_URL` as `https://<backend-host>/api`, then redeploy the frontend.
+1. Import this repository into Vercel and choose the **Services** preset. Click **Refresh** if Vercel says `vercel.json` is required. You should see `frontend` at `/` and `backend` at `/api`.
+2. Add `GEMINI_API_KEY` as a Vercel environment variable for the backend. Keep it out of frontend variables.
+3. Deploy. The frontend keeps using `/api`, and Vercel routes those requests to FastAPI.
 
-The frontend defaults to `/api` for local Vite development and uses `VITE_API_BASE_URL` when the backend is hosted separately.
+If Vercel Services is unavailable, use the included `render.yaml` for the backend and set `VITE_API_BASE_URL` in Vercel to `https://<backend-host>/api`.
 
 ## Disclaimer
 
